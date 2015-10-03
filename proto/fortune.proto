@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+message FortuneRequest {}
+
+message FortuneResponse {
+  string fortune = 1;
+}
+
+service FortuneService {
+  rpc GetFortune(FortuneRequest) returns (FortuneResponse);
+}

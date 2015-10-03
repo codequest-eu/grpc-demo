@@ -1,0 +1,11 @@
+body {
+  font-family: 'Helvetica Neue', sans-serif;
+  width: 600px;
+  margin: 200px auto;
+}
+
+h2 {
+  font-weight: 200;
+  font-size: 36px;
+  color: #888;
+}

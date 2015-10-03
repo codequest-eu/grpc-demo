@@ -1,0 +1,19 @@
+server:
+  dockerfile: Dockerfile-server
+  build: .
+  command: bundle exec ruby server.rb
+  volumes:
+    - ./server:/fortune-server
+  expose:
+    - '1983'
+
+client:
+  dockerfile: Dockerfile-client
+  build: .
+  command: bundle exec rails server --binding 0.0.0.0 --port 3000
+  volumes:
+    - ./client:/fortune-client
+  ports:
+    - '3000:3000'
+  links:
+    - server
