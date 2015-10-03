@@ -30,5 +30,5 @@ if __FILE__ == $PROGRAM_NAME
   address = '0.0.0.0:1983'
   server.add_http2_port(address, credentials)
   server.handle(FortuneServer.new)
-  server.run
+  server.run_till_terminated
 end
