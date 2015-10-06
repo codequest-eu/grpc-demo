@@ -1,21 +1,4 @@
-FROM ruby:2.2.3
-
-# Install build tools:
-RUN apt-get update -qq && apt-get install -y build-essential autoconf libtool
-
-# Download and make gRPC:
-ENV GRPC_PATH=/tmp/grpc
-RUN git clone --depth 1 https://github.com/grpc/grpc.git $GRPC_PATH
-WORKDIR $GRPC_PATH
-RUN git submodule update --init
-RUN make
-
-# Before we install gRPC we need to install protobuf v3 library. Thankfully this
-# comes bundled with the gRPC library we already installed.
-WORKDIR third_party/protobuf
-RUN make install
-WORKDIR $GRPC_PATH
-RUN make install
+FROM codequest/grpc-ruby:latest
 
 # Set up proto directory and copy the code there:
 ENV PROTO_HOME=/fortune-proto
