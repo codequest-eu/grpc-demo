@@ -1,30 +1,24 @@
-proxy:
-  image: jwilder/nginx-proxy:latest
-  command: ./proxy.sh
-  ports:
-    - '80:80'
-  volumes:
-    - './proxy.sh:/app/proxy.sh'
-    - '/var/run/docker.sock:/tmp/docker.sock'
+version: '2'
 
-server:
-  dockerfile: Dockerfile-server
-  build: .
-  command: bundle exec ruby server.rb
-  volumes:
-    - ./server:/fortune-server
-  expose:
-    - '1983'
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile-server
+    command: bundle exec ruby server.rb
+    volumes:
+      - ./server:/fortune-server
+    expose:
+      - '1983'
 
-client:
-  dockerfile: Dockerfile-client
-  build: .
-  command: bundle exec rails server --binding 0.0.0.0 --port 3000
-  volumes:
-    - ./client:/fortune-client
-  environment:
-    VIRTUAL_HOST: '192.168.99.100'
-  expose:
-    - '3000'
-  links:
-    - server
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile-client
+    command: bundle exec rails server --binding 0.0.0.0 --port 3000
+    volumes:
+      - ./client:/fortune-client
+    ports:
+      - '3000:3000'
+    links:
+      - server

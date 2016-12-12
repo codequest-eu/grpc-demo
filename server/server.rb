@@ -1,8 +1,8 @@
 $LOAD_PATH << ENV['LIB_HOME']
 
 require 'grpc'
-require 'fortune'
-require 'fortune_services'
+require 'fortune_pb'
+require 'fortune_services_pb'
 
 class FortuneServer < FortuneService::Service
   def initialize
@@ -18,17 +18,9 @@ class FortuneServer < FortuneService::Service
 end # class FortuneServer
 
 if __FILE__ == $PROGRAM_NAME
-  credentials = GRPC::Core::ServerCredentials.new(
-    File.read('/.keys/ca.crt'), # pem_root_certs
-    [{
-      private_key: File.read('/.keys/server.key'),
-      cert_chain: File.read('/.keys/server.crt')
-    }],
-    true # force client authentication
-  )
   server = GRPC::RpcServer.new
   address = '0.0.0.0:1983'
-  server.add_http2_port(address, credentials)
+  server.add_http2_port(address, :this_port_is_insecure)
   server.handle(FortuneServer.new)
   server.run_till_terminated
 end

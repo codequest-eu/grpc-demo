@@ -29,12 +29,4 @@ ADD ./client $APP_HOME
 # Clean up installation artifacts:
 RUN rm -rf $GRPC_PATH
 
-# Copy CA certificate and server credentials:
-ENV KEY_HOME=/.keys
-RUN mkdir $KEY_HOME
-WORKDIR $KEY_HOME
-ADD ./keys/client.crt $KEY_HOME/
-ADD ./keys/client.key $KEY_HOME/
-ADD ./keys/server.crt $KEY_HOME/
-
 WORKDIR $APP_HOME
